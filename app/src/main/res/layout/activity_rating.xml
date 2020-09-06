@@ -1,0 +1,39 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="#DCB8E3"
+    tools:context=".RatingActivity">
+    
+    <RatingBar
+        android:id="@+id/ratingbar"
+        android:layout_marginTop="250dp"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_centerHorizontal="true"
+        android:stepSize="0.25"
+        android:numStars="5"
+        android:rating="4.5"
+        android:progressTint="#DD658E"
+        android:progressBackgroundTint="@color/cardview_light_background"
+        />
+    <Button
+        android:layout_width="300dp"
+        android:layout_height="wrap_content"
+        android:text="Rate your day"
+        android:onClick="click"
+        android:textSize="20sp"
+        android:textColor="@color/cardview_light_background"
+        android:layout_below="@+id/rb"
+        android:background="@drawable/rounded_edittext_register_login"
+        android:id="@+id/btn_clickrating"
+        android:layout_marginTop="360dp"
+       android:layout_centerHorizontal="true"
+
+        />
+
+
+</RelativeLayout>
