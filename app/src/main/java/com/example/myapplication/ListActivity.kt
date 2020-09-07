@@ -44,7 +44,7 @@ class ListActivity : AppCompatActivity(), OnDayClickListener {
 
         //da zna točno od kojeg korisnika uzima dane tražimo uid
         val uid = FirebaseAuth.getInstance().uid ?: ""
-         FirebaseDatabase.getInstance().getReference("/users/$uid/days").addListenerForSingleValueEvent(object : ValueEventListener {
+         FirebaseDatabase.getInstance().getReference("/users/$uid/days").addValueEventListener(object : ValueEventListener {
 
             override fun onCancelled(error: DatabaseError) {
                 Toast.makeText(this@ListActivity, "error", Toast.LENGTH_SHORT).show()
