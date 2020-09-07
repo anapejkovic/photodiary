@@ -23,7 +23,7 @@ class CreateDayActivity : AppCompatActivity()  {
     var rating : Float? = null
      var date : String? =null
      var location :String? =null
-     var image: String? =null
+     var image: Uri? =null
 
     lateinit var storage: FirebaseStorage
     lateinit var storageReference: StorageReference
@@ -101,8 +101,8 @@ class CreateDayActivity : AppCompatActivity()  {
 
             3 -> {
                  if (resultCode == Activity.RESULT_OK)
-                     image = data!!.getStringExtra("image_key")!!
-                    Toast.makeText(this, image, Toast.LENGTH_SHORT).show()
+                     image = data!!.getParcelableExtra<Uri>("image_key")!!
+                    Toast.makeText(this, image!!.toString(), Toast.LENGTH_SHORT).show()
 
                  }
 
@@ -112,22 +112,22 @@ class CreateDayActivity : AppCompatActivity()  {
     private fun saveDayDataToFireBaseDatabase (){
         val uid = FirebaseAuth.getInstance().uid ?: ""
         val ref = FirebaseDatabase.getInstance().getReference("/users/$uid/days/$date")
-        val dayData  = DayData(rating!!  ,location!! ,image!! , dayText.text.toString() )
+        val dayData  = DayData(rating!!  ,location!! ,image!!.toString() , dayText.text.toString() )
+        //val imageUri = Uri.parse(image)
         storageReference.child("Photos/$date.jpg")
-            .putFile(Uri.parse(image))
+            .putFile(image!!)
             .addOnCompleteListener{
                 ref.setValue(dayData).addOnCompleteListener {
                     finish()
                 }
             }
-
             .addOnFailureListener{
                 Log.e("Upload failed:", it.message ?: "")
             }
         }
     }
 
-class DayData(val rating:Float, val location:String, val image: String, val DayText : String)
+data class DayData(val rating:Float, val location:String, val image: String, val dayText : String)
 
 
 

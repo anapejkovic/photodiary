@@ -84,20 +84,16 @@ class ImageUpload : AppCompatActivity() {
             else{
                 val resultIntent = Intent()
 
-                resultIntent.putExtra("image_key", imageUri.toString())
+                resultIntent.putExtra("image_key", imageUri)
                 setResult(Activity.RESULT_OK, resultIntent)
                 finish()
-
             }
 
         }
-
     }
 
-
-
     private fun chooseImage() {
-        Intent(Intent.ACTION_GET_CONTENT).also {
+        Intent(Intent.ACTION_OPEN_DOCUMENT).also {
             it.type ="image/*"
             startActivityForResult(it,
                 REQUEST_IMAGE_SELECT

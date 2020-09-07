@@ -99,8 +99,13 @@ class ListActivity : AppCompatActivity(), OnDayClickListener {
     override fun OnDayClick(date : String) {
             //ovaj aktiviti je morao implementirati OnDayClick listener jer on zna kako prebaciti iz jednoga u drugi
             val intent = Intent(this, DayActivity::class.java)
+            val bundle = Bundle()
+            bundle.putString("DATE", date.replace(".","_"))
+            intent.putExtras(bundle)
             startActivity(intent)
+
         Toast.makeText(this, date, Toast.LENGTH_SHORT).show()
+
     }
 
 }
