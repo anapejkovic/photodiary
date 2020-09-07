@@ -2,13 +2,17 @@ package com.example.myapplication
 
 import android.app.Activity
 import android.content.Intent
+import android.net.Uri
 import android.os.Bundle
+import android.util.Log
 import android.widget.Button
 import android.widget.EditText
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.database.FirebaseDatabase
+import com.google.firebase.storage.FirebaseStorage
+import com.google.firebase.storage.StorageReference
 import kotlinx.android.synthetic.main.activity_create_day.*
 
 
@@ -16,10 +20,13 @@ class CreateDayActivity : AppCompatActivity()  {
 
     lateinit var dayText: EditText
     lateinit var btnSaveDay: Button
-    var rating : Float = 0.0f
-    lateinit var date : String
-    lateinit var location :String
-    lateinit var image: String
+    var rating : Float? = null
+     var date : String? =null
+     var location :String? =null
+     var image: String? =null
+
+    lateinit var storage: FirebaseStorage
+    lateinit var storageReference: StorageReference
 
     companion object {
         const val RATING_NUMBER = "rating_number"
@@ -29,8 +36,11 @@ class CreateDayActivity : AppCompatActivity()  {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_create_day)
 
-        dayText = findViewById(R.id.DayPlainText)
+        dayText = findViewById(R.id.dayPlainText)
         btnSaveDay = findViewById(R.id.btnSaveDay)
+
+        storage = FirebaseStorage.getInstance()
+        storageReference = storage.reference
 
         val bundle = intent.extras
          date = bundle!!.getString("DATE")!!
@@ -39,11 +49,15 @@ class CreateDayActivity : AppCompatActivity()  {
         Toast.makeText(this, date , Toast.LENGTH_SHORT).show()
 
         btnSaveDay.setOnClickListener {
-           // saveDiary()
-            if (textViewday==null)
-                Toast.makeText(this, "Please tell us how was your day" , Toast.LENGTH_SHORT).show()
+            if (dayPlainText.text.isEmpty() || rating==null || location==null || image==null)
+                Toast.makeText(this, "Please provide us they information" , Toast.LENGTH_SHORT).show()
             else
+            {
                 saveDayDataToFireBaseDatabase()
+              //  finish()
+            }
+
+
         }
 
         btn_raiting.setOnClickListener {
@@ -61,17 +75,11 @@ class CreateDayActivity : AppCompatActivity()  {
             startActivityForResult(intent,2)
         }
 
-         fun saveDiary() {
-            val textofDay = DayPlainText.text.toString().trim()
-
-            if (textofDay.isEmpty()) {
-                Toast.makeText(this, "Please tell me how was your day", Toast.LENGTH_SHORT).show()
-                return
-            }
-
-            val ref = FirebaseDatabase.getInstance().getReference("Days")
-            val dayId = ref.push().key
+        btn_image.setOnClickListener {
+            val intent = Intent(this, ImageUpload::class.java)
+            startActivityForResult(intent,3)
         }
+
     }
 
     override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
@@ -86,22 +94,39 @@ class CreateDayActivity : AppCompatActivity()  {
             }
             2 -> {
                 if (resultCode == Activity.RESULT_OK) {
-                     location = data!!.getStringExtra("location_key")!!
+                    location = data!!.getStringExtra("location_key")!!
                     Toast.makeText(this, location, Toast.LENGTH_SHORT).show()
                 }
             }
+
+            3 -> {
+                 if (resultCode == Activity.RESULT_OK)
+                     image = data!!.getStringExtra("image_key")!!
+                    Toast.makeText(this, image, Toast.LENGTH_SHORT).show()
+
+                 }
+
         }
     }
 
     private fun saveDayDataToFireBaseDatabase (){
         val uid = FirebaseAuth.getInstance().uid ?: ""
         val ref = FirebaseDatabase.getInstance().getReference("/users/$uid/days/$date")
+        val dayData  = DayData(rating!!  ,location!! ,image!! , dayText.text.toString() )
+        storageReference.child("Photos/$date.jpg")
+            .putFile(Uri.parse(image))
+            .addOnCompleteListener{
+                ref.setValue(dayData).addOnCompleteListener {
+                    finish()
+                }
+            }
 
-        val dayData  = DayData(rating  ,location , "" , dayText.text.toString() )
-        ref.setValue(dayData)
-
+            .addOnFailureListener{
+                Log.e("Upload failed:", it.message ?: "")
+            }
+        }
     }
-}
+
 class DayData(val rating:Float, val location:String, val image: String, val DayText : String)
 
 

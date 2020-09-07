@@ -54,7 +54,7 @@
         tools:ignore="MissingConstraints" />
 
     <EditText
-        android:id="@+id/DayPlainText"
+        android:id="@+id/dayPlainText"
         android:layout_width="match_parent"
         android:layout_height="400dp"
         android:layout_marginTop="50dp"
@@ -83,17 +83,7 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/DayPlainText" />
 
-    <TextView
-        android:id="@+id/textViewday"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="16dp"
-        android:text="TextView"
-        app:layout_constraintBottom_toTopOf="@+id/DayPlainText"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/btn_location"
-        app:layout_constraintVertical_bias="0.2" />
+
 
     <TextView
         android:id="@+id/textViewrating"

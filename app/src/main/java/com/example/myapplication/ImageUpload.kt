@@ -29,6 +29,8 @@ class ImageUpload : AppCompatActivity() {
     val REQUEST_IMAGE_CAPTURE = 1
     val REQUEST_IMAGE_SELECT = 10
 
+
+
     private var imageUri: Uri? = null
     //referenca koja pokazuje na specifičan put, gdje želimo spremiti,
     //val storageReference = Firebase.storage.reference
@@ -76,7 +78,23 @@ class ImageUpload : AppCompatActivity() {
             chooseImage()
         }
 
+        btnUpload.setOnClickListener {
+            if(imageUri == null)
+                Toast.makeText(this, "Please select photo", Toast.LENGTH_SHORT).show()
+            else{
+                val resultIntent = Intent()
+
+                resultIntent.putExtra("image_key", imageUri.toString())
+                setResult(Activity.RESULT_OK, resultIntent)
+                finish()
+
+            }
+
+        }
+
     }
+
+
 
     private fun chooseImage() {
         Intent(Intent.ACTION_GET_CONTENT).also {

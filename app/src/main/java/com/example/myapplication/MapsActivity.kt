@@ -143,7 +143,6 @@ class MapsActivity : AppCompatActivity(), OnMapReadyCallback, GoogleMap.OnMarker
     }
 
 
-
     private fun getPlaces(){
         store= FirebaseFirestore.getInstance()
         store.collection("location").get() .addOnSuccessListener { document ->
@@ -157,8 +156,6 @@ class MapsActivity : AppCompatActivity(), OnMapReadyCallback, GoogleMap.OnMarker
             }
         }
     }
-
-
 
 
     private fun getDaysAgo(daysAgo: Int): Date {

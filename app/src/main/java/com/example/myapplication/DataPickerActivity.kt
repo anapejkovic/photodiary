@@ -41,6 +41,8 @@ class DataPickerActivity : AppCompatActivity() {
             bundle.putString("DATE", dataTextview.text.toString().replace("/","_"))
             intent.putExtras(bundle)
             startActivity(intent)
+            finish()
+
         }
     }
 }
