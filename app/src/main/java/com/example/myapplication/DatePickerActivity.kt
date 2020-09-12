@@ -7,22 +7,23 @@ import androidx.appcompat.app.AppCompatActivity
 import kotlinx.android.synthetic.main.activity_data_picker.*
 import java.util.*
 
-class DataPickerActivity : AppCompatActivity() {
+class DatePickerActivity : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_data_picker)
 
         //Calendar
-        val c = Calendar.getInstance()
-        val year = c.get (Calendar.YEAR)
-        val month = c.get(Calendar.MONTH)
-        val day = c.get (Calendar.DAY_OF_MONTH)
+        val calendar = Calendar.getInstance()
+        val year = calendar.get (Calendar.YEAR)
+        val month = calendar.get(Calendar.MONTH)
+        val day = calendar.get (Calendar.DAY_OF_MONTH)
 
         //button click to show DatePickerDialog
         pickDateBtn.setOnClickListener{
+            //kupi datum koji mi izaberemo
             val dpd =DatePickerDialog(this, DatePickerDialog.OnDateSetListener {view , mYear, mMonth, mDay ->
 
-                //set to text view
+                //ispisuje pokupljeni datum
                 dataTextview.setText(""+ mDay +"/"+ (mMonth+1) +"/"+ mYear)
             }, year, month, day)
 
@@ -31,11 +32,12 @@ class DataPickerActivity : AppCompatActivity() {
             /* show dialog */
             dpd.show()
         }
+
         CreateDayBtn.setOnClickListener {
 
             val intent = Intent (this, CreateDayActivity :: class.java)
 
-
+            //saljem paket s datumom
             val bundle = Bundle()
 
             bundle.putString("DATE", dataTextview.text.toString().replace("/","_"))

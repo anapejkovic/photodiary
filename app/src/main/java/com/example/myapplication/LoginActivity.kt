@@ -12,29 +12,28 @@ import kotlinx.android.synthetic.main.activity_login.*
 
 class LoginActivity : AppCompatActivity() {
 
-    lateinit var  sharedpreferences: SharedPreferences
+    lateinit var sharedpreferences: SharedPreferences
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
 
         setContentView(R.layout.activity_login)
 
-
+        //provjera je li korisnik ulogiran
         sharedpreferences = applicationContext.getSharedPreferences("Preferences", 0)
         val UserLoggedIn = sharedpreferences.getBoolean("KEY_LOGIN", false)
-
-
         if (UserLoggedIn) {
             val intent = Intent(this, ListActivity::class.java)
             startActivity(intent)
+            finish()
         }
 
         login_button_login.setOnClickListener {
             performLogin()
         }
 
-        create_new_account_textview.setOnClickListener{
-            val intent = Intent(this, MainActivity::class.java)
+        create_new_account_textview.setOnClickListener {
+            val intent = Intent(this, RegisterActivity::class.java)
             startActivity(intent)
         }
     }
@@ -50,26 +49,26 @@ class LoginActivity : AppCompatActivity() {
 
         FirebaseAuth.getInstance().signInWithEmailAndPassword(email, password)
             .addOnSuccessListener {
-                sharedpreferences.edit().putBoolean("KEY_LOGIN",true).apply()
+                sharedpreferences.edit().putBoolean("KEY_LOGIN", true).apply()
                 val user = FirebaseAuth.getInstance().currentUser
                 updateUI(user)
             }
             .addOnFailureListener {
                 Toast.makeText(this, "Failed to log in.", Toast.LENGTH_SHORT).show()
-                updateUI(null)
             }
     }
 
-    private fun updateUI(currentUser: FirebaseUser?){
+    private fun updateUI(currentUser: FirebaseUser?) {
         if (currentUser != null) {
 
-                val intent = Intent(this, ListActivity::class.java)
-                startActivity(intent)
-                Toast.makeText(this, "Successfully logged in", Toast.LENGTH_SHORT).show()
-            }
-
+            val intent = Intent(this, ListActivity::class.java)
+            startActivity(intent)
+            finish()
+            Toast.makeText(this, "Successfully logged in", Toast.LENGTH_SHORT).show()
         }
 
-
     }
+
+
+}
 

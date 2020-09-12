@@ -33,11 +33,12 @@ class ListActivity : AppCompatActivity(), OnDayClickListener {
         sharedpreferences = applicationContext.getSharedPreferences("Preferences", 0)
 
         btnAddDay.setOnClickListener {
-            val intent = Intent(this, DataPickerActivity::class.java)
+            val intent = Intent(this, DatePickerActivity::class.java)
             startActivity(intent)
         }
 
         logout_button_logout.setOnClickListener {
+            FirebaseAuth.getInstance().signOut()
             sharedpreferences.edit().putBoolean("KEY_LOGIN",false).apply()
             finish()
         }
@@ -72,6 +73,7 @@ class ListActivity : AppCompatActivity(), OnDayClickListener {
     class MyAdapter(private val myDataset: List<String>, private val listener: OnDayClickListener) :
         RecyclerView.Adapter<MyAdapter.MyViewHolder>() {
 
+        //spaja moj text_view sa klasom MyViewHolder koji ćemo kasnije korisiti u adapteru
         class MyViewHolder(val textView: TextView) : RecyclerView.ViewHolder(textView)
 
         override fun onCreateViewHolder(parent: ViewGroup,
@@ -83,7 +85,7 @@ class ListActivity : AppCompatActivity(), OnDayClickListener {
             return MyViewHolder(textView)
         }
 
-        // mora znati pozicije
+        // mora znati pozicije u listi i iz te pozicije uzimamo tekst
         override fun onBindViewHolder(holder: MyViewHolder, position: Int) {
 
             holder.textView.text = myDataset[position]

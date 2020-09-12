@@ -4,7 +4,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     tools:context=".ListActivity"
-    android:background="#DCB8E3">
+    android:background="@drawable/flowar">
 
     <androidx.recyclerview.widget.RecyclerView
         android:id="@+id/my_recycler_view"
@@ -36,7 +36,7 @@
         android:layout_marginTop="15dp"
         android:layout_marginBottom="15dp"
         android:text="MY PHOTO DIARY"
-        android:textColor="@android:color/white"
+        android:textColor="#DD658E"
         android:textSize="20dp"
         android:textStyle="bold"
         app:layout_constraintBottom_toTopOf="@+id/my_recycler_view"

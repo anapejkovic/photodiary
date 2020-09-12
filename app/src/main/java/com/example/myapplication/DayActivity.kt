@@ -32,7 +32,7 @@ class DayActivity : AppCompatActivity() {
             }
 
             override fun onDataChange(snapshot: DataSnapshot) {
-                    textViewCurrentDate.text = date.replace("_",".")
+                    textViewCurrentDate.text =  date.replace("_",".")
                     textViewCurrentLocation.text = snapshot.child("location").value as String
                     textViewCurrentRating.text = (snapshot.child("rating").value as Double).toString()
                     textViewCurrentDay.text = snapshot.child("dayText").value as String

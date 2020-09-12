@@ -5,7 +5,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="#DCB8E3"
+    android:background="@drawable/flowar"
     tools:context=".RatingActivity">
     
     <RatingBar
@@ -24,10 +24,8 @@
         android:layout_width="300dp"
         android:layout_height="wrap_content"
         android:text="Rate your day"
-        android:onClick="click"
         android:textSize="20sp"
         android:textColor="@color/cardview_light_background"
-        android:layout_below="@+id/rb"
         android:background="@drawable/rounded_edittext_register_login"
         android:id="@+id/btn_clickrating"
         android:layout_marginTop="360dp"

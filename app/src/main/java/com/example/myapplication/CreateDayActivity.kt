@@ -5,8 +5,6 @@ import android.content.Intent
 import android.net.Uri
 import android.os.Bundle
 import android.util.Log
-import android.widget.Button
-import android.widget.EditText
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import com.google.firebase.auth.FirebaseAuth
@@ -18,32 +16,22 @@ import kotlinx.android.synthetic.main.activity_create_day.*
 
 class CreateDayActivity : AppCompatActivity()  {
 
-    lateinit var dayText: EditText
-    lateinit var btnSaveDay: Button
-    var rating : Float? = null
+     var rating : Float? = null
      var date : String? =null
      var location :String? =null
      var image: Uri? =null
 
-    lateinit var storage: FirebaseStorage
-    lateinit var storageReference: StorageReference
 
-    companion object {
-        const val RATING_NUMBER = "rating_number"
-    }
+    lateinit var storageReference: StorageReference
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_create_day)
 
-        dayText = findViewById(R.id.dayPlainText)
-        btnSaveDay = findViewById(R.id.btnSaveDay)
-
-        storage = FirebaseStorage.getInstance()
-        storageReference = storage.reference
+        storageReference = FirebaseStorage.getInstance().reference
 
         val bundle = intent.extras
-         date = bundle!!.getString("DATE")!!
+         date = bundle!!.getString("DATE","")
 
 
         Toast.makeText(this, date , Toast.LENGTH_SHORT).show()
@@ -51,23 +39,15 @@ class CreateDayActivity : AppCompatActivity()  {
         btnSaveDay.setOnClickListener {
             if (dayPlainText.text.isEmpty() || rating==null || location==null || image==null)
                 Toast.makeText(this, "Please provide us they information" , Toast.LENGTH_SHORT).show()
-            else
-            {
+            else {
                 saveDayDataToFireBaseDatabase()
-              //  finish()
             }
-
 
         }
 
         btn_raiting.setOnClickListener {
             val intent = Intent(this, RatingActivity::class.java)
             startActivityForResult(intent,1)
-        }
-
-        btn_image.setOnClickListener {
-            val intent = Intent(this, ImageUpload::class.java)
-            startActivity(intent)
         }
 
         btn_location.setOnClickListener {
@@ -103,17 +83,14 @@ class CreateDayActivity : AppCompatActivity()  {
                  if (resultCode == Activity.RESULT_OK)
                      image = data!!.getParcelableExtra<Uri>("image_key")!!
                     Toast.makeText(this, image!!.toString(), Toast.LENGTH_SHORT).show()
-
                  }
-
         }
     }
 
     private fun saveDayDataToFireBaseDatabase (){
         val uid = FirebaseAuth.getInstance().uid ?: ""
         val ref = FirebaseDatabase.getInstance().getReference("/users/$uid/days/$date")
-        val dayData  = DayData(rating!!  ,location!! ,image!!.toString() , dayText.text.toString() )
-        //val imageUri = Uri.parse(image)
+        val dayData  = DayData(rating!!  ,location!! ,image!!.toString() , dayPlainText.text.toString() )
         storageReference.child("Photos/$date.jpg")
             .putFile(image!!)
             .addOnCompleteListener{

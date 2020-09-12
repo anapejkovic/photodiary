@@ -6,8 +6,8 @@
     android:layout_height="match_parent"
     android:orientation="vertical"
     android:gravity="center"
-    android:background="#DCB8E3"
-    tools:context=".DataPickerActivity">
+    android:background="@drawable/flowar"
+    tools:context=".DatePickerActivity">
 
     // button to show data picker dialog
 

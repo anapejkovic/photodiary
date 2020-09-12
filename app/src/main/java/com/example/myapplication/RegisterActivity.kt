@@ -9,22 +9,17 @@ import com.google.firebase.database.FirebaseDatabase
 import kotlinx.android.synthetic.main.activity_register.*
 
 
-class MainActivity : AppCompatActivity() {
+class RegisterActivity : AppCompatActivity() {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
          setContentView(R.layout.activity_register)
-
-        /* auth = FirebaseAuth.getInstance() */
 
         register_button_register.setOnClickListener() {
             performRegister()
         }
 
          already_have_account_text_view.setOnClickListener {
-             Log.d( "MainActivity", "Try to show login activity")
-             // launch the login activity somehow
-
              finish()
          }
     }
@@ -39,19 +34,11 @@ class MainActivity : AppCompatActivity() {
             return
         }
 
-        Log.d( "Main", "Attempting to create user with email: $email")
-        // da se ne crasha ako sam ostavila prazno pollje
-
-        /*Log.d(  "MainActivity",  "Email is: " + email)
-        Log.d(  "MainActivity", "password: $password")*/
-
         // Firebase Authentication to create a user with email and password
         FirebaseAuth.getInstance().createUserWithEmailAndPassword(email, password)
-            .addOnCompleteListener{
-                if  (!it.isSuccessful) return@addOnCompleteListener
+            .addOnSuccessListener {
 
-                // else if successful
-                Log.d("Main" , "Successfully created user with uid: ${it.result?.user?.uid}")
+                Log.d("Main" , "Successfully created user with uid: ${it.user?.uid}")
                 Toast.makeText(this, "Successfully create user.", Toast.LENGTH_SHORT).show()
                 saveUserToFireBaseDatabase()
             }
@@ -73,5 +60,5 @@ class MainActivity : AppCompatActivity() {
             }
     }
 }
-class User(val uid:String, val username:String)
+ class User(val uid:String, val username:String)
 
